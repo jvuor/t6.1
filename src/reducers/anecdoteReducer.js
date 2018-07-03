@@ -35,3 +35,17 @@ const reducer = (store = initialState, action) => {
 }
 
 export default reducer
+
+export const actionVote = (target) => {
+  return {
+    type: 'VOTE',
+    id: target
+  }
+}
+
+export const actionCreate = (content) => {
+  return {
+    type: 'CREATE',
+    content: content
+  }
+}
