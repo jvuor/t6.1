@@ -1,4 +1,4 @@
-const notificationAtStart = 'Hello World!'
+const notificationAtStart = null
 
 const initialState = { notification: notificationAtStart }
 

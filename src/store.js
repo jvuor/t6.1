@@ -11,19 +11,23 @@ const reducer = combineReducers({
 })
 
 const store = createStore(reducer)
+var timer
 
 const action = () => {
   return { type: 'EMPTY' }
 }
 
+const setTimer = () => {
+  if (timer) { clearTimeout(timer) }
+
+  timer = setTimeout(() => {
+    store.dispatch({ type: 'EMPTY' })
+  }, 5000)
+}
+
 store.subscribe(() => {
   const notificationMessage = store.getState().notification.notification
-  if (notificationMessage) {
-    setTimeout( () => {
-      //store.dispatch(action)            //<- ei toimi wtf
-      store.dispatch({ type: 'EMPTY' }) //<- toimii
-    }, 5000)
-  }
+  if (notificationMessage) { setTimer() }
 })
 
 export default store

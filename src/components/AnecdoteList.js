@@ -1,26 +1,34 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { actionVote } from '../reducers/anecdoteReducer'
+import { actionSetNotification } from '../reducers/notificationReducer'
 
 class AnecdoteList extends React.Component {
+  constructor (props) {
+    super(props)
+  }
+
   render() {
-    const filter = this.props.store.getState().filter.filter
-    console.log('filter', filter, typeof filter)
-    const anecdotes = this.props.store.getState().anecdotes
-      .filter(m => m.content.toLowerCase().includes(filter.toLowerCase()))
+    const click = (event) => {
+      const targetID = event.target.name
+
+      var likedMsg = `You upvoted "${this.props.anecdotes.find(m => m.id === targetID).content}"`
+
+      this.props.actionVote(targetID)
+      this.props.actionSetNotification(likedMsg)
+    }
 
     return (
       <div>
         <h2>Anecdotes</h2>
-        {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+        {this.props.anecdotes.map(anecdote =>
           <div key={anecdote.id}>
             <div>
               {anecdote.content}
             </div>
             <div>
               has {anecdote.votes}
-              <button onClick={() =>
-                this.props.store.dispatch(actionVote(anecdote.id))
-              }>
+              <button onClick={click} name={anecdote.id}>
                 vote
               </button>
             </div>
@@ -31,4 +39,18 @@ class AnecdoteList extends React.Component {
   }
 }
 
-export default AnecdoteList
+const filteredAnecdotes = (anecdotes, filter) => {
+  const sortedAnecdotes  = anecdotes
+    .filter(m => m.content.toLowerCase().includes(filter.toLowerCase()))
+    .sort((a, b) => b.votes - a.votes)
+
+  return sortedAnecdotes
+}
+
+const mapStateToProps = (state) => {
+  return {
+    anecdotes: filteredAnecdotes(state.anecdotes, state.filter.filter)
+  }
+}
+
+export default connect(mapStateToProps, { actionVote, actionSetNotification })(AnecdoteList)
