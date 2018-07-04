@@ -2,18 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { actionVote } from '../reducers/anecdoteReducer'
 import { actionSetNotification } from '../reducers/notificationReducer'
+import anecdoteService from '../services/anecdotes'
 
 class AnecdoteList extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
   render() {
-    const click = (event) => {
+    const upvote = async (event) => {
       const targetID = event.target.name
 
       var likedMsg = `You upvoted "${this.props.anecdotes.find(m => m.id === targetID).content}"`
 
+      anecdoteService.upvoteAnecdote(targetID)
       this.props.actionVote(targetID)
       this.props.actionSetNotification(likedMsg)
     }
@@ -28,7 +26,7 @@ class AnecdoteList extends React.Component {
             </div>
             <div>
               has {anecdote.votes}
-              <button onClick={click} name={anecdote.id}>
+              <button onClick={upvote} name={anecdote.id}>
                 vote
               </button>
             </div>
