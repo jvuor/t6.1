@@ -1,6 +1,7 @@
 const notificationAtStart = null
-
 const initialState = { notification: notificationAtStart }
+
+var timer = null
 
 const reducer = (store = initialState, action) => {
   if (action.type==='SET') {
@@ -16,9 +17,15 @@ const reducer = (store = initialState, action) => {
 export default reducer
 
 export const actionSetNotification = (notification) => {
-  return {
-    type: 'SET',
-    notification: notification
+  return async (dispatch) => {
+
+    dispatch({ type: 'SET', notification:notification })
+
+    if (timer) { clearTimeout(timer) }
+
+    timer = setTimeout(() => {
+      dispatch({ type: 'EMPTY' })
+    }, 5000)
   }
 }
 

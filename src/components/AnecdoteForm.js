@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { actionCreate } from '../reducers/anecdoteReducer'
 import { actionSetNotification } from '../reducers/notificationReducer'
-import anecdoteService from '../services/anecdotes'
 
 class AnecdoteForm extends React.Component {
   handleSubmit = async (event) => {
@@ -10,12 +9,11 @@ class AnecdoteForm extends React.Component {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
 
-    const savedAnecdote = await anecdoteService.createNew(content)
-    console.log(savedAnecdote)
-    this.props.actionCreate(savedAnecdote)
-    this.props.actionSetNotification(`Added "${content}" as a new anecdote!`)
+    this.props.actionCreate(content)
 
+    this.props.actionSetNotification(`Added "${content}" as a new anecdote!`)
   }
+  
   render() {
     return (
       <div>

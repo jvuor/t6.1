@@ -4,15 +4,12 @@ import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 import Filter from './components/Filter'
 import { connect } from 'react-redux'
-import anecdoteService from './services/anecdotes'
 import { actionInit } from './reducers/anecdoteReducer'
 
 class App extends React.Component {
 
   componentDidMount = async () => {
-    anecdoteService.getAll().then(anecdotes => {
-      this.props.actionInit(anecdotes)
-    })
+    this.props.actionInit()
   }
 
   render() {
